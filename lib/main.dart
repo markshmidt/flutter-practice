@@ -39,19 +39,21 @@ class MyHomePage extends StatelessWidget {
     var pair = appState.current;
 
     return Scaffold(
-      body: Column(
-        children: [
-          Text('A random AWESOME idea:'), // ← Example change.
-          BigCard(pair: pair),// refactor to bigcard
-          // ↓ Add this.
-          ElevatedButton(
-            onPressed: () {
-              appState.getNext(); //assign current with random WOrdPair
-            },
-            child: Text('Next'),
-          ),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center, //center UI
+          children: [
+            BigCard(pair: pair),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                appState.getNext();
+              },
+              child: Text('Next'),
+            ),
+          ],
 
+        ),
       ),
     );
   }
@@ -66,11 +68,17 @@ class BigCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context); // code requests the app's current theme with Theme.of(context).
+    final style = theme.textTheme.displayMedium!.copyWith( //displayMedium property is a large style meant for display text.
+      // copywith - returns a copy of the text style with the changes you define
+      color: theme.colorScheme.onPrimary,
+    );
+
     return Card(
       color: theme.colorScheme.primary,
-      child: Padding(
-        padding: const EdgeInsets.all(20),//code defines the card's color to be the same as the theme's colorScheme property.
-        child: Text(pair.asLowerCase),
+      child: Text(
+        pair.asLowerCase,
+        style: style,
+        semanticsLabel: "${pair.first} ${pair.second}", //override the visual content of the text widget with a semantic content that is more appropriate for screen r
       ),
     );
   }
